@@ -1,0 +1,14 @@
+<tr mat-row>
+  <td mat-cell>
+    <mat-checkbox [checked]="match.isFinished" (change)="toggleStatus()" color="primary">
+    </mat-checkbox>
+  </td>
+  <td mat-cell [class.finished]="match.isFinished">{{ match.homeTeam }} vs {{ match.awayTeam }}</td>
+  <td mat-cell>{{ match.location }}</td>
+  <td mat-cell>{{ match.matchDate | date:'yyyy-MM-dd HH:mm' }}</td>
+  <td mat-cell>
+    <button mat-icon-button color="primary" aria-label="Edit match">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </td>
+</tr>

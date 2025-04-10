@@ -1,0 +1,16 @@
+<div class="teams-container">
+  <h2>Csapatok</h2>
+  <div class="team-cards-container">
+    <mat-card class="team-card" *ngFor="let team of teams">
+      <mat-card-header>
+        <mat-card-title>{{ team.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="team-details">
+          <p><strong>Város:</strong> {{ team.city }}</p>
+          <p><strong>Edző:</strong> {{ team.coach }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

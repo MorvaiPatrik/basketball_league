@@ -1,0 +1,34 @@
+<div class="tasks-container">
+  <h1>🗂️ Saját feladatok</h1>
+
+  <section class="task-section">
+    <h2>Aktív feladatok ({{ taskCount() }})</h2>
+    <div *ngFor="let task of tasks()" [ngClass]="{'completed': task.isCompleted}"
+      [ngStyle]="{'background-color': task.isCompleted ? '#4caf50' : '#fff3e0'}" class="task-card">
+      <span>{{ task.task }}</span>
+      <button mat-icon-button (click)="completeTask(task)">
+        <mat-icon>check</mat-icon>
+      </button>
+    </div>
+  </section>
+
+  <section class="task-section">
+    <h2>Teljesített feladatok ({{ completedCount() }})</h2>
+    <div *ngFor="let task of completedTasks()" class="task-card completed">
+      <span>{{ task.task }}</span>
+      <button mat-icon-button (click)="removeCompletedTask(task)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </section>
+
+  <div class="add-task-button">
+    <button mat-raised-button color="accent" (click)="openNewTaskDialog()">Új feladat felvitele</button>
+  </div>
+
+  <div class="back-button">
+    <button mat-flat-button color="primary" [routerLink]="['/home']">
+      <mat-icon>arrow_back</mat-icon> Vissza a főoldalra
+    </button>
+  </div>
+</div>

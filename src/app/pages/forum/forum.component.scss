@@ -1,0 +1,58 @@
+.forum-card {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #f7f7f7;
+}
+
+mat-card-header {
+  background-color: #FF5722;
+  color: white;
+  text-align: center;
+}
+
+mat-card-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+mat-card-subtitle {
+  font-size: 14px;
+  color: #eeeeee;
+}
+
+.forum-container {
+  margin-top: 20px;
+}
+
+.comment-input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.comment {
+  margin-top: 20px;
+}
+
+.comment-card {
+  margin-bottom: 10px;
+  background-color: #e3e3e3;
+  border-radius: 5px;
+}
+
+.comment-card mat-card-header {
+  background-color: #FF9800;
+}
+
+.comment-card mat-card-title {
+  font-weight: bold;
+}
+
+button {
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  mat-card {
+    margin: 10px;
+  }
+}

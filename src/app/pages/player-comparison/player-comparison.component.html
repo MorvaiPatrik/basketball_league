@@ -1,0 +1,40 @@
+<mat-card class="player-comparison-card">
+  <mat-card-header>
+    <mat-card-title>Játékos Összehasonlítás</mat-card-title>
+    <mat-card-subtitle>Válassz ki két játékost és hasonlítsd össze őket!</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="comparison-controls">
+      <mat-form-field appearance="fill">
+        <mat-label>Játékos 1</mat-label>
+        <mat-select [(value)]="player1" (selectionChange)="onPlayerSelect()">
+          <mat-option *ngFor="let player of players" [value]="player">{{ player.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Játékos 2</mat-label>
+        <mat-select [(value)]="player2" (selectionChange)="onPlayerSelect()">
+          <mat-option *ngFor="let player of players" [value]="player">{{ player.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="player1 && player2" class="comparison-stats">
+      <div class="player-stats" [ngClass]="{ 'best': player1.pointsPerGame > player2.pointsPerGame }">
+        <h3>{{ player1.name }}</h3>
+        <p>Pont/meccs: {{ player1.pointsPerGame }}</p>
+        <p>3P%: {{ player1.threePointPercentage }}%</p>
+        <p>Védekezés: {{ player1.defenseRating }}</p>
+      </div>
+
+      <div class="player-stats" [ngClass]="{ 'best': player2.pointsPerGame > player1.pointsPerGame }">
+        <h3>{{ player2.name }}</h3>
+        <p>Pont/meccs: {{ player2.pointsPerGame }}</p>
+        <p>3P%: {{ player2.threePointPercentage }}%</p>
+        <p>Védekezés: {{ player2.defenseRating }}</p>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

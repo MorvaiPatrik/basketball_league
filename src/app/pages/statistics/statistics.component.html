@@ -1,0 +1,40 @@
+<div class="container statistics">
+  <h1>📊 Kosárlabda Statisztikák</h1>
+  <p>Tekintsd meg a legfrissebb statisztikákat és teljesítményeket!</p>
+
+  <div class="statistics-card">
+    <h2>Mérkőzések és MVP-k</h2>
+    <div class="matches">
+      <div class="match-card" *ngFor="let match of matches">
+        <h3>{{ match.homeTeam }} vs {{ match.awayTeam }}</h3>
+        <p><strong>Időpont:</strong> {{ match.matchDate | date: 'short' }}</p>
+        <p><strong>Helyszín:</strong> {{ match.location }}</p>
+
+        <div *ngIf="match.matchDate > april14Date; else finished">
+          <p><em>Mérkőzés folyamatban...</em></p>
+        </div>
+        <ng-template #finished>
+          <div *ngIf="match.isFinished">
+            <p><strong>Házon belüli MVP:</strong> {{ match.mvpHome }}</p>
+            <p><strong>Vendég MVP:</strong> {{ match.mvpAway }}</p>
+
+            <div class="mvp-stats">
+              <div class="mvp-card">
+                <h4>{{ match.mvpHome }}</h4>
+                <p><strong>Pontok:</strong> 30</p>
+                <p><strong>Lepattanók:</strong> 12</p>
+                <p><strong>Gólpasszok:</strong> 7</p>
+              </div>
+              <div class="mvp-card">
+                <h4>{{ match.mvpAway }}</h4>
+                <p><strong>Pontok:</strong> 28</p>
+                <p><strong>Lepattanók:</strong> 10</p>
+                <p><strong>Gólpasszok:</strong> 8</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

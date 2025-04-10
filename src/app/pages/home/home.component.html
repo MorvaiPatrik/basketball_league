@@ -1,0 +1,30 @@
+<div class="container">
+  <h1>🏀 Üdvözöl a Kosárlabda Bajnokság!</h1>
+  <p>Tekintsd meg az alábbi menüpontokat!</p>
+
+  <div class="button-grid">
+    <button class="home-btn primary" (click)="navigateToSchedule()">Meccsnaptár</button>
+    <button class="home-btn primary" (click)="navigateToTeams()">Csapatok</button>
+    <button class="home-btn primary" (click)="navigateToStatistics()">Statisztikák</button>
+    <button class="home-btn primary" (click)="navigateToForum()">Fórum</button>
+    <button class="home-btn primary" (click)="navigateToTactical()">Interaktív játéktervező</button>
+
+    <button class="home-btn primary" (click)="navigateToPlayerComparison()">Játékos Összehasonlító</button>
+  </div>
+
+  <div class="auth-buttons">
+    <button class="home-btn outlined" *ngIf="!isLoggedIn" [routerLink]="['/login']">Bejelentkezés</button>
+    <button class="home-btn primary" *ngIf="isLoggedIn" [routerLink]="['/my-tasks']">Saját profil</button>
+    <button class="home-btn outlined" *ngIf="isLoggedIn" (click)="logout()">Kijelentkezés</button>
+  </div>
+
+  <div class="news-section">
+    <h2>🗞️ Friss hírek</h2>
+    <div class="news-grid">
+      <div class="news-card" *ngFor="let news of newsList">
+        <h3>{{ news.title }}</h3>
+        <p>{{ news.content }}</p>
+      </div>
+    </div>
+  </div>
+</div>

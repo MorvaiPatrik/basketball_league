@@ -1,0 +1,52 @@
+.schedule {
+  padding: 20px;
+}
+
+.schedule ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.schedule li {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.schedule strong {
+  font-size: 1.2em;
+}
+
+.schedule span {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.clickable-row:hover {
+  background-color: #f0f0f0;
+}
+
+.status-box {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.status-checkmark {
+  margin-right: 8px;
+}
+
+.finished mat-icon {
+  color: green;
+}
+
+.status-box:hover {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}

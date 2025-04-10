@@ -1,0 +1,36 @@
+<mat-card class="tactical-board-card">
+  <mat-card-header>
+    <mat-card-title>Interaktív játéktervező</mat-card-title>
+    <mat-card-subtitle>Hozd létre a támadásod lépéseit!</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="court-container" (click)="addPoint($event)">
+      <svg class="line-overlay">
+        <polyline *ngIf="points.length > 1" [attr.points]="getPolylinePoints()" stroke="#ff5722" stroke-width="3"
+          fill="none"></polyline>
+      </svg>
+
+      <div *ngFor="let point of points" class="dot" [ngStyle]="{ left: point.x + 'px', top: point.y + 'px' }">
+        ●
+      </div>
+
+      <div class="instruction">🏀 Kattints a pályára, hogy megrajzold a támadás lépéseit!</div>
+    </div>
+
+    <div class="comment-box">
+      <mat-form-field appearance="fill">
+        <mat-label>Megjegyzés</mat-label>
+        <input matInput [(ngModel)]="newComment">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="addComment()">Hozzáadás</button>
+    </div>
+
+    <div class="comments" *ngIf="comments.length > 0">
+      <h3>Hozzászólások:</h3>
+      <div *ngFor="let comment of comments" class="comment">
+        🗨️ {{ comment.text }} <span class="timestamp">({{ comment.timestamp | date:'shortTime' }})</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

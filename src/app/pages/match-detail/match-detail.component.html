@@ -1,0 +1,25 @@
+<div class="tasks-container">
+  <h1>🏀 Kosárlabda Feladatok</h1>
+
+  <section class="task-section">
+    <h2>🧺 Aktuális Gyakorlatok ({{ taskCount() }})</h2>
+    <mat-card *ngFor="let task of tasks()" class="task-card">
+      <mat-icon class="icon bounce">sports_basketball</mat-icon>
+      <span>{{ task }}</span>
+    </mat-card>
+  </section>
+
+  <section class="task-section">
+    <h2>✅ Befejezett Küldetések ({{ completedCount() }})</h2>
+    <mat-card *ngFor="let task of completedTasks()" class="task-card completed">
+      <mat-icon class="icon">emoji_events</mat-icon>
+      <span>{{ task }}</span>
+    </mat-card>
+  </section>
+
+  <div class="back-button">
+    <button mat-flat-button color="primary" [routerLink]="['/home']">
+      <mat-icon>arrow_back</mat-icon> Vissza a főoldalra
+    </button>
+  </div>
+</div>

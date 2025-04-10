@@ -1,0 +1,24 @@
+<div class="new-training-container">
+  <h1>Új edzés hozzáadása</h1>
+
+  <form (ngSubmit)="submitForm()" [formGroup]="newTrainingForm" class="training-form">
+    <div class="form-field">
+      <label for="trainingName">Edzés neve</label>
+      <input id="trainingName" formControlName="trainingName" required placeholder="Add meg az edzés nevét" />
+    </div>
+
+    <div class="form-field">
+      <label for="trainingDate">Edzés időpontja</label>
+      <input id="trainingDate" type="date" formControlName="trainingDate" required />
+    </div>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="newTrainingForm.invalid">
+        <mat-icon>add</mat-icon> Hozzáadás
+      </button>
+      <button mat-flat-button color="warn" [routerLink]="['/my-tasks']">
+        <mat-icon>arrow_back</mat-icon> Vissza a feladatokhoz
+      </button>
+    </div>
+  </form>
+</div>

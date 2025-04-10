@@ -1,0 +1,29 @@
+<mat-card class="forum-card">
+  <mat-card-header>
+    <mat-card-title>Sport Fórum</mat-card-title>
+    <mat-card-subtitle>Vegyél részt a beszélgetésben a legújabb mérkőzésekről, csapatokról!</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="forum-container">
+      <mat-form-field class="comment-input" appearance="fill">
+        <mat-label>Új hozzászólás</mat-label>
+        <textarea matInput [(ngModel)]="newComment" rows="3"></textarea>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="postComment()">Hozzászólás</button>
+
+      <div *ngFor="let comment of comments" class="comment">
+        <mat-card class="comment-card">
+          <mat-card-header>
+            <mat-card-title>{{ comment.user }}</mat-card-title>
+            <mat-card-subtitle>{{ comment.timestamp | date: 'short' }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ comment.text }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
