@@ -1,10 +1,14 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { TaskService } from '../../shared/services/task.service';
+import { AuthService } from '../../shared/services/auth.service';
+import { Task } from '../../shared/models/Task';
+import { Subscription } from 'rxjs';
+import { Timestamp } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { MatDialogRef } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-my-tasks',
@@ -13,126 +17,103 @@ import { MatDialogRef } from '@angular/material/dialog';
     CommonModule,
     MatIconModule,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    FormsModule,
   ],
   templateUrl: './my-tasks.component.html',
   styleUrls: ['./my-tasks.component.scss']
 })
-export class MyTasksComponent {
-  tasks = signal<{ task: string, isCompleted: boolean }[]>([
-    { task: 'Szabaddobás gyakorlása – napi 50 dobás', isCompleted: false },
-    { task: 'Labdavezetés bal kézzel', isCompleted: false },
-    { task: 'Gyorsindítás gyakorlása', isCompleted: false },
-    { task: '1v1 védekezési pozíció fejlesztése', isCompleted: false }
-  ]);
+export class MyTasksComponent implements OnInit, OnDestroy {
+  tasks: Task[] = [];
+  completedTasks: Task[] = [];
+  latestTasks: Task[] = [];
+  paginatedTasks: Task[] = [];
+  lastLoadedTimestamp: Timestamp | null = null;
 
-  completedTasks = signal<{ task: string, isCompleted: boolean }[]>([
-    { task: 'Kosár alatti befejezések gyakorlása', isCompleted: true },
-    { task: 'Alapjárat bemelegítő edzés', isCompleted: true },
-    { task: 'Dobóforma javítása tükör előtt', isCompleted: true },
-    { task: 'Zónavédekezés áttekintése', isCompleted: true }
-  ]);
-
-  taskCount = computed(() => this.tasks().length);
-  completedCount = computed(() => this.completedTasks().length);
-
-  isDialogOpen = false;
+  subscription: Subscription = new Subscription();
   newTask: string = '';
+  currentUserId: string | null = null;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(
+    private taskService: TaskService,
+    private authService: AuthService
+  ) {}
 
-  openNewTaskDialog() {
-    const dialogRef = this.dialog.open(NewTaskDialogComponent, {
-      width: '400px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.addNewTask(result);
-      }
-    });
-  }
-
-  addNewTask(task: string) {
-    if (task.trim()) {
-      this.tasks.update(tasks => [...tasks, { task: task.trim(), isCompleted: false }]);
+  ngOnInit(): void {
+    this.currentUserId = this.authService.getCurrentUserId();
+    if (this.currentUserId) {
+      this.loadTasks();
+      this.loadLatestTasks();
+      this.loadNextPaginatedTasks();
     }
   }
 
-  completeTask(task: { task: string, isCompleted: boolean }) {
-    this.completedTasks.update(completedTasks => [...completedTasks, { ...task, isCompleted: true }]);
-
-    this.tasks.update(tasks => tasks.filter(t => t !== task));
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
-  removeCompletedTask(task: { task: string, isCompleted: boolean }) {
-    this.completedTasks.update(completedTasks =>
-      completedTasks.filter(t => t !== task)
+  loadTasks(): void {
+    if (!this.currentUserId) return;
+
+    this.subscription.add(
+      this.taskService.getTasksByUserId(this.currentUserId).subscribe((tasks: Task[]) => {
+        this.tasks = tasks.filter(task => !task.isCompleted);
+        this.completedTasks = tasks.filter(task => task.isCompleted);
+      })
     );
   }
 
-  updateTasks() {
-    this.tasks.update(tasks => [...tasks]);
+  loadLatestTasks(): void {
+    this.subscription.add(
+      this.taskService.getLatestTasks(5).subscribe(tasks => {
+        this.latestTasks = tasks;
+      })
+    );
+  }
+
+  async loadNextPaginatedTasks(): Promise<void> {
+    const startTimestamp = this.lastLoadedTimestamp || Timestamp.fromMillis(0);
+    const tasks = await this.taskService.getNextTasks(startTimestamp);
+    if (tasks.length) {
+      this.paginatedTasks.push(...tasks);
+      this.lastLoadedTimestamp = tasks[tasks.length - 1].createdAt;
+    }
+  }
+
+  addNewTask(): void {
+  if (this.newTask.trim() && this.currentUserId) {
+    const newTask: Omit<Task, 'id'> = { 
+      task: this.newTask.trim(), 
+      isCompleted: false,
+      userId: this.currentUserId
+    };
+
+    this.taskService.addTask(newTask).then(() => {
+      this.newTask = '';
+      this.loadTasks();
+      this.loadLatestTasks();
+
+      this.lastLoadedTimestamp = null;
+      this.paginatedTasks = [];
+      this.loadNextPaginatedTasks();
+    });
   }
 }
 
-@Component({
-  selector: 'app-new-task-dialog',
-  template: ` 
-    <div class="dialog-content">
-      <h2>Új edzés hozzáadása</h2>
-      <div class="form-field">
-        <label for="newTask">Edzés neve</label>
-        <input type="text" id="newTask" (input)="onInputChange($event)">
-      </div>
-      <div class="dialog-buttons">
-        <button mat-flat-button color="primary" (click)="addTask()">Hozzáadás</button>
-        <button mat-flat-button color="warn" (click)="closeDialog()">Mégse</button>
-      </div>
-    </div>
-  `,
-  styles: [
-    ` 
-      .dialog-content {
-        padding: 20px;
-      }
-      .dialog-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-      }
-      .form-field {
-        margin-bottom: 16px;
-      }
-      label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-      }
-      input[type="text"] {
-        width: 100%;
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-      }
-    `
-  ]
-})
-export class NewTaskDialogComponent {
-  newTask: string = '';
 
-  constructor(public dialogRef: MatDialogRef<NewTaskDialogComponent>) { }
-
-  onInputChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.newTask = input.value;
+  completeTask(task: Task) {
+    this.taskService.updateTask(task.id, { isCompleted: true }).then(() => this.loadTasks());
   }
 
-  addTask() {
-    this.dialogRef.close(this.newTask);
-  }
+  removeCompletedTask(task: Task) {
+  this.taskService.deleteTask(task.id).then(() => {
+    this.loadTasks();
+    this.loadLatestTasks();
 
-  closeDialog() {
-    this.dialogRef.close();
-  }
+    this.lastLoadedTimestamp = null;
+    this.paginatedTasks = [];
+    this.loadNextPaginatedTasks();
+  });
+}
+
 }

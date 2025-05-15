@@ -10,11 +10,12 @@
         <p><strong>Időpont:</strong> {{ match.matchDate | date: 'short' }}</p>
         <p><strong>Helyszín:</strong> {{ match.location }}</p>
 
-        <div *ngIf="match.matchDate > april14Date; else finished">
+        <div *ngIf="!match.isFinished; else finished">
           <p><em>Mérkőzés folyamatban...</em></p>
         </div>
+
         <ng-template #finished>
-          <div *ngIf="match.isFinished">
+          <div>
             <p><strong>Házon belüli MVP:</strong> {{ match.mvpHome }}</p>
             <p><strong>Vendég MVP:</strong> {{ match.mvpAway }}</p>
 

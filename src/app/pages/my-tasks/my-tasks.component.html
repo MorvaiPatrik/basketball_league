@@ -2,9 +2,8 @@
   <h1>🗂️ Saját feladatok</h1>
 
   <section class="task-section">
-    <h2>Aktív feladatok ({{ taskCount() }})</h2>
-    <div *ngFor="let task of tasks()" [ngClass]="{'completed': task.isCompleted}"
-      [ngStyle]="{'background-color': task.isCompleted ? '#4caf50' : '#fff3e0'}" class="task-card">
+    <h2>Aktív feladatok ({{ tasks.length }})</h2>
+    <div *ngFor="let task of tasks" class="task-card" [class.completed]="task.isCompleted">
       <span>{{ task.task }}</span>
       <button mat-icon-button (click)="completeTask(task)">
         <mat-icon>check</mat-icon>
@@ -13,8 +12,8 @@
   </section>
 
   <section class="task-section">
-    <h2>Teljesített feladatok ({{ completedCount() }})</h2>
-    <div *ngFor="let task of completedTasks()" class="task-card completed">
+    <h2>Teljesített feladatok ({{ completedTasks.length }})</h2>
+    <div *ngFor="let task of completedTasks" class="task-card completed">
       <span>{{ task.task }}</span>
       <button mat-icon-button (click)="removeCompletedTask(task)">
         <mat-icon>delete</mat-icon>
@@ -22,9 +21,25 @@
     </div>
   </section>
 
-  <div class="add-task-button">
-    <button mat-raised-button color="accent" (click)="openNewTaskDialog()">Új feladat felvitele</button>
-  </div>
+  <section class="task-section">
+    <h2>🆕 Legfrissebb feladatok</h2>
+    <div *ngFor="let task of latestTasks" class="task-card">
+      <span>{{ task.task }}</span>
+    </div>
+  </section>
+
+  <section class="task-section">
+    <h2>📄 Lapozható feladatok</h2>
+    <div *ngFor="let task of paginatedTasks" class="task-card">
+      <span>{{ task.task }}</span>
+    </div>
+    <button mat-stroked-button color="primary" (click)="loadNextPaginatedTasks()">További feladatok betöltése</button>
+  </section>
+
+  <form class="add-task-button" (submit)="addNewTask(); $event.preventDefault();">
+    <input type="text" [(ngModel)]="newTask" name="newTask" placeholder="Új feladat neve" />
+    <button mat-raised-button color="accent" type="submit">Új feladat hozzáadása</button>
+  </form>
 
   <div class="back-button">
     <button mat-flat-button color="primary" [routerLink]="['/home']">

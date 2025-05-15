@@ -4,8 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatNavList } from '@angular/material/list';
-import { MatIcon } from '@angular/material/icon';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -29,14 +28,16 @@ export class HomeComponent implements OnInit {
     },
     {
       title: '🛠️ Karbantartás várható',
-      content: 'Április 20-án este rövid ideig nem lesz elérhető az oldal.'
+      content: 'Június 20-án este rövid ideig nem lesz elérhető az oldal.'
     }
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    this.authService.currentUser.subscribe(user => {
+      this.isLoggedIn = !!user;
+    });
   }
 
   navigateToSchedule() {
@@ -68,8 +69,9 @@ export class HomeComponent implements OnInit {
   }
 
   logout() {
-    localStorage.setItem('isLoggedIn', 'false');
-    this.isLoggedIn = false;
-    this.router.navigate(['/']);
+    this.authService.signOut().then(() => {
+      this.isLoggedIn = false;
+      this.router.navigate(['/home']);
+    });
   }
 }

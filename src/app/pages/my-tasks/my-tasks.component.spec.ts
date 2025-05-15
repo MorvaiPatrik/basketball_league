@@ -20,7 +20,7 @@ describe('MyTasksComponent', () => {
   });
 
   it('should show tasks and completed tasks', () => {
-    expect(component.tasks().length).toBeGreaterThan(0);
-    expect(component.completedTasks().length).toBeGreaterThan(0);
+    expect(component.tasks.length).toBeGreaterThan(0);
+    expect(component.completedTasks.length).toBeGreaterThan(0);
   });
 });

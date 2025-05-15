@@ -10,106 +10,99 @@ export class MatchService {
     {
       homeTeam: 'Los Angeles Lakers',
       awayTeam: 'Miami Heat',
-      matchDate: new Date('2025-04-10T19:00:00'),
+      matchDate: new Date('2025-05-10T19:00:00'),
       location: 'Staples Center, Los Angeles',
-      isFinished: new Date('2025-04-10') < new Date('2025-04-13'),
+      isFinished: true,
       mvpHome: 'LeBron James',
       mvpAway: 'Jimmy Butler'
     },
     {
       homeTeam: 'Golden State Warriors',
       awayTeam: 'Boston Celtics',
-      matchDate: new Date('2025-04-11T20:00:00'),
+      matchDate: new Date('2025-05-12T20:00:00'),
       location: 'Chase Center, San Francisco',
-      isFinished: new Date('2025-04-11') < new Date('2025-04-13'),
+      isFinished: true,
       mvpHome: 'Stephen Curry',
       mvpAway: 'Jayson Tatum'
     },
     {
       homeTeam: 'Chicago Bulls',
       awayTeam: 'Brooklyn Nets',
-      matchDate: new Date('2025-04-12T18:30:00'),
+      matchDate: new Date('2025-05-17T18:30:00'),
       location: 'United Center, Chicago',
-      isFinished: new Date('2025-04-12') < new Date('2025-04-13'),
+      isFinished: true,
       mvpHome: 'Zach LaVine',
       mvpAway: 'Kevin Durant'
     },
+
     {
       homeTeam: 'Toronto Raptors',
       awayTeam: 'Philadelphia 76ers',
-      matchDate: new Date('2025-04-13T19:45:00'),
+      matchDate: new Date('2025-05-26T19:45:00'),
       location: 'Scotiabank Arena, Toronto',
-      isFinished: new Date('2025-04-13') < new Date('2025-04-13'),
-      mvpHome: 'Pascal Siakam',
-      mvpAway: 'Joel Embiid'
+      isFinished: false,
+      mvpHome: '',
+      mvpAway: ''
     },
     {
       homeTeam: 'Dallas Mavericks',
       awayTeam: 'Denver Nuggets',
-      matchDate: new Date('2025-04-14T20:00:00'),
+      matchDate: new Date('2025-05-28T20:00:00'),
       location: 'American Airlines Center, Dallas',
-      isFinished: new Date('2025-04-14') < new Date('2025-04-13'),
-      mvpHome: 'Luka Dončić',
-      mvpAway: 'Nikola Jokić'
+      isFinished: false,
+      mvpHome: '',
+      mvpAway: ''
     },
     {
       homeTeam: 'Phoenix Suns',
       awayTeam: 'Milwaukee Bucks',
-      matchDate: new Date('2025-04-15T18:00:00'),
+      matchDate: new Date('2025-06-01T18:00:00'),
       location: 'Footprint Center, Phoenix',
-      isFinished: new Date('2025-04-15') < new Date('2025-04-13'),
-      mvpHome: 'Devin Booker',
-      mvpAway: 'Giannis Antetokounmpo'
+      isFinished: false,
+      mvpHome: '',
+      mvpAway: ''
     },
     {
       homeTeam: 'Los Angeles Clippers',
       awayTeam: 'New York Knicks',
-      matchDate: new Date('2025-04-16T19:30:00'),
+      matchDate: new Date('2025-06-02T19:30:00'),
       location: 'Crypto.com Arena, Los Angeles',
-      isFinished: new Date('2025-04-16') < new Date('2025-04-13'),
-      mvpHome: 'Kawhi Leonard',
-      mvpAway: 'Julius Randle'
+      isFinished: false,
+      mvpHome: '',
+      mvpAway: ''
     },
     {
       homeTeam: 'Atlanta Hawks',
       awayTeam: 'Cleveland Cavaliers',
-      matchDate: new Date('2025-04-17T18:45:00'),
+      matchDate: new Date('2025-06-04T18:45:00'),
       location: 'State Farm Arena, Atlanta',
-      isFinished: new Date('2025-04-17') < new Date('2025-04-13'),
-      mvpHome: 'Trae Young',
-      mvpAway: 'Darius Garland'
+      isFinished: false,
+      mvpHome: '',
+      mvpAway: ''
     },
     {
       homeTeam: 'Orlando Magic',
       awayTeam: 'Indiana Pacers',
-      matchDate: new Date('2025-04-18T20:30:00'),
+      matchDate: new Date('2025-06-06T20:30:00'),
       location: 'Amway Center, Orlando',
-      isFinished: new Date('2025-04-18') < new Date('2025-04-13'),
-      mvpHome: 'Paolo Banchero',
-      mvpAway: 'Tyrese Haliburton'
+      isFinished: false,
+      mvpHome: '',
+      mvpAway: ''
     },
     {
       homeTeam: 'Sacramento Kings',
       awayTeam: 'Charlotte Hornets',
-      matchDate: new Date('2025-04-19T19:15:00'),
+      matchDate: new Date('2025-06-08T19:15:00'),
       location: 'Golden 1 Center, Sacramento',
-      isFinished: new Date('2025-04-19') < new Date('2025-04-13'),
-      mvpHome: 'De’Aaron Fox',
-      mvpAway: 'LaMelo Ball'
+      isFinished: false,
+      mvpHome: '',
+      mvpAway: ''
     }
   ];
 
   constructor() { }
 
   getMatches(): Observable<Match[]> {
-    const filteredMatches = this.matches.map(match => {
-      if (!match.isFinished) {
-        const { mvpHome, mvpAway, ...rest } = match;
-        return rest;
-      }
-      return match;
-    });
-
-    return of(filteredMatches);
+    return of(this.matches);
   }
 }
